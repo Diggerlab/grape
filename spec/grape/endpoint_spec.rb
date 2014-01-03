@@ -378,8 +378,8 @@ describe Grape::Endpoint do
           error! 400, "expected nil" if params[:version]
           params[:user]
         end
-        post '/omitted_params', MultiJson.dump(user: 'Bob'), { 'CONTENT_TYPE' => 'application/json' }
-        last_response.status.should == 201
+        post '/omitted_params', MultiJson.dump(user: 'Bob'), 'CONTENT_TYPE' => 'application/json'
+        last_response.status.should == 200
         last_response.body.should == "Bob"
       end
     end
@@ -569,7 +569,7 @@ describe Grape::Endpoint do
           verb
         end
         send(verb, '/example/and/some/more')
-        last_response.status.should eql verb == "post" ? 201 : 200
+        last_response.status.should eql verb == "post" ? 200 : 200
         last_response.body.should eql verb == 'head' ? '' : verb
       end
     end

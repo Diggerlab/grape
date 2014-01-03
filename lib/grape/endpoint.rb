@@ -243,7 +243,7 @@ module Grape
         return @status if @status
         case request.request_method.to_s.upcase
         when 'POST'
-          201
+          200
         else
           200
         end

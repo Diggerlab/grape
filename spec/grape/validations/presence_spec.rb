@@ -76,7 +76,7 @@ describe Grape::Validations::PresenceValidator do
     io = StringIO.new('{"id" : 56}')
     post '/', {}, 'rack.input' => io, 'CONTENT_TYPE' => 'application/json', 'CONTENT_LENGTH' => io.length
     last_response.body.should == '{"ret":56}'
-    last_response.status.should == 201
+    last_response.status.should == 200
   end
 
   it 'validates name, company' do

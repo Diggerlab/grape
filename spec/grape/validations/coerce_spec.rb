@@ -144,8 +144,8 @@ describe Grape::Validations::CoerceValidator do
         subject.params { requires :file, coerce: Rack::Multipart::UploadedFile }
         subject.post '/upload' do params[:file].filename; end
 
-        post '/upload', { file: Rack::Test::UploadedFile.new(__FILE__) }
-        last_response.status.should == 201
+        post '/upload', file: Rack::Test::UploadedFile.new(__FILE__)
+        last_response.status.should == 200
         last_response.body.should == File.basename(__FILE__).to_s
       end
 

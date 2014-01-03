@@ -383,8 +383,8 @@ describe Grape::API do
             subject.send(verb) do
               env['api.request.body']
             end
-            send verb, '/', MultiJson.dump(object), { 'CONTENT_TYPE' => 'application/json' }
-            last_response.status.should == (verb == :post ? 201 : 200)
+            send verb, '/', MultiJson.dump(object), 'CONTENT_TYPE' => 'application/json'
+            last_response.status.should == (verb == :post ? 200 : 200)
             last_response.body.should eql MultiJson.dump(object)
             last_request.params.should eql Hash.new
           end
@@ -393,8 +393,8 @@ describe Grape::API do
             subject.send(verb) do
               env['api.request.input']
             end
-            send verb, '/', MultiJson.dump(object), { 'CONTENT_TYPE' => 'application/json' }
-            last_response.status.should == (verb == :post ? 201 : 200)
+            send verb, '/', MultiJson.dump(object), 'CONTENT_TYPE' => 'application/json'
+            last_response.status.should == (verb == :post ? 200 : 200)
             last_response.body.should eql MultiJson.dump(object).to_json
           end
           context "chunked transfer encoding" do
@@ -403,8 +403,8 @@ describe Grape::API do
               subject.send(verb) do
                 env['api.request.input']
               end
-              send verb, '/', MultiJson.dump(object), { 'CONTENT_TYPE' => 'application/json', 'HTTP_TRANSFER_ENCODING' => 'chunked', 'CONTENT_LENGTH' => nil  }
-              last_response.status.should == (verb == :post ? 201 : 200)
+              send verb, '/', MultiJson.dump(object), 'CONTENT_TYPE' => 'application/json', 'HTTP_TRANSFER_ENCODING' => 'chunked', 'CONTENT_LENGTH' => nil
+              last_response.status.should == (verb == :post ? 200 : 200)
               last_response.body.should eql MultiJson.dump(object).to_json
             end
           end
@@ -463,13 +463,13 @@ describe Grape::API do
       end
     end
 
-    it 'returns a 201 response code for POST by default' do
+    it 'returns a 200 response code for POST by default' do
       subject.post('example') do
         "Created"
       end
 
       post '/example'
-      last_response.status.should eql 201
+      last_response.status.should eql 200
       last_response.body.should eql 'Created'
     end
 
@@ -1343,8 +1343,8 @@ describe Grape::API do
       subject.post '/data' do
         { x: params[:x] }
       end
-      post "/data", '{"x":42}', { 'CONTENT_TYPE' => 'application/json' }
-      last_response.status.should == 201
+      post "/data", '{"x":42}', 'CONTENT_TYPE' => 'application/json'
+      last_response.status.should == 200
       last_response.body.should == '{"x":42}'
     end
     context 'lambda parser' do
@@ -1427,7 +1427,7 @@ describe Grape::API do
         { x: params[:x] }
       end
       post "/data", '{"x":42}', "CONTENT_TYPE" => ""
-      last_response.status.should == 201
+      last_response.status.should == 200
       last_response.body.should == '{"x":42}'
     end
   end
